@@ -1,12 +1,16 @@
 import { useState } from 'react'
-
-
+import { useDispatch, UseDispatch,useSelector } from 'react-redux'
+import { increment } from './slices/counterSlice'
+import { RootState } from './app/store';
 function App() {
-  const [count, setCount] = useState(0)
+
+  const dispatch = useDispatch();
+  const count = useSelector((state:RootState) => state.counter.counter)
 
   return (
     <>
-     <p>hello chat</p>
+     <p>current count :{count}</p>
+     <button onClick={() => dispatch(increment())}>increment</button>
     </>
   )
 }
