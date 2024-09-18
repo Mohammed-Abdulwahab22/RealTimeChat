@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { AuthForm } from './components/AuthForm';
 import { RegisterForm } from './components/RegisterForm';
 import { Home } from './components/Home';
+import NotFound from './components/NotFound';
 
 function App() {
 
@@ -14,6 +15,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/Login" element={<AuthForm />} />
         <Route path="/Register" element={<RegisterForm />} />
+        
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   )
