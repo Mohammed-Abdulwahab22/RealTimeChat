@@ -1,0 +1,75 @@
+.AuthForm-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(to bottom, #01539F, #007BFF, #00A1E0);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.AuthForm-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 40px;
+    height: auto;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.AuthForm-form img {
+    margin-bottom: 20px;
+}
+
+.AuthForm-form h1 {
+    margin: 20px 0;
+}
+
+.AuthForm-form label,
+.AuthForm-form input {
+    margin: 10px 0;
+    width: 100%;
+}
+
+.AuthForm-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.AuthForm-form button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.AuthForm-form button:hover {
+    background-color: #0056b3;
+}
+
+.AuthForm-register {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.AuthForm-register a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.AuthForm-register a:hover {
+    text-decoration: underline;
+}

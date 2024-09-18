@@ -1,16 +1,20 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { increment } from './slices/counterSlice'
-import { RootState } from './app/store';
+import { Routes, Route } from 'react-router-dom';
+import { AuthForm } from './components/AuthForm';
+import { RegisterForm } from './components/RegisterForm';
+import { Home } from './components/Home';
+
 function App() {
 
-  const dispatch = useDispatch();
-  const count = useSelector((state: RootState) => state.counter.counter)
+  
 
   return (
     <>
-      <p>current count :{count}</p>
-      <button onClick={() => dispatch(increment())}>increment</button>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Login" element={<AuthForm />} />
+        <Route path="/Register" element={<RegisterForm />} />
+      </Routes>
     </>
   )
 }
