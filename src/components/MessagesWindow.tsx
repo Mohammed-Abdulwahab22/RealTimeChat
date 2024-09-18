@@ -1,7 +1,10 @@
 import React from 'react'
+import { MessageInputBar } from './MessageInputBar'
 
 export const MessagesWindow = () => {
   return (
-    <div>MessagesWindow</div>
+    <div>MessagesWindow
+        <MessageInputBar />
+    </div>
   )
 }
