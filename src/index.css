@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'SodaCream'; 
+    src: url('src/assets/Soda Cream.otf') format('opentype'); 
+    font-weight: normal; 
+    font-style: normal; 
+}
+
+
 .AuthForm-container {
     display: flex;
     justify-content: center;
@@ -15,13 +23,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 40px;
     height: auto;
-    width: 300px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.AuthForm-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 }
 
 .AuthForm-form img {
@@ -30,18 +44,28 @@
 
 .AuthForm-form h1 {
     margin: 20px 0;
+    font-family: 'SodaCream', sans-serif;
+    font-size: 50px;
+    color: #333;
 }
 
-.AuthForm-form label,
+.AuthForm-form label {
+    font-weight: bold;
+    color: #555;
+}
+
 .AuthForm-form input {
     margin: 10px 0;
     width: 100%;
+    padding: 12px;
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+    transition: border-color 0.3s;
 }
 
-.AuthForm-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.AuthForm-form input:focus {
+    border-color: #0056b3;
+    outline: none;
 }
 
 .AuthForm-form button {
@@ -49,27 +73,45 @@
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px;
+    padding: 12px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s, transform 0.2s;
     width: 100%;
     margin-top: 10px;
+    font-size: 16px;
 }
 
 .AuthForm-form button:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
 
 .AuthForm-register {
     margin-top: 20px;
     font-size: 14px;
+    color: #555;
 }
 
 .AuthForm-register a {
     color: #007BFF;
     text-decoration: none;
+    font-weight: bold;
 }
 
 .AuthForm-register a:hover {
     text-decoration: underline;
+    color: #0056b3;
+}
+
+
+.Home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(to bottom, #01539F, #007BFF, #00A1E0);
+    position: absolute;
+    top: 0;
+    left: 0;
 }
