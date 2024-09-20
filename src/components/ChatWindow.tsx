@@ -8,7 +8,7 @@ export const ChatWindow = () => {
         <div className='ChatWindow-container'>
             <div className='ChatWindow-usersList'>
                 <UsersList />
-                <ProfilePage />
+                
             </div>
             <div className='ChatWindow-messages'>
                 <MessagesWindow />
