@@ -5,6 +5,7 @@ import { RegisterForm } from './components/RegisterForm';
 import { Home } from './components/Home';
 import NotFound from './components/NotFound';
 import { ChatWindow } from './components/ChatWindow';
+import { ProfilePage } from './components/ProfilePage';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/Login" element={<AuthForm />} />
         <Route path="/Register" element={<RegisterForm />} />
         <Route path='/ChatWindow' element={<ChatWindow />} />
+        <Route path='/ProfilePage' element={<ProfilePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
