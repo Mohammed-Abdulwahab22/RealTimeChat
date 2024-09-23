@@ -6,6 +6,7 @@ import { Home } from './components/Home';
 import NotFound from './components/NotFound';
 import { ChatWindow } from './components/ChatWindow';
 import { ProfilePage } from './components/ProfilePage';
+import { Settings } from './components/Settings';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/Register" element={<RegisterForm />} />
         <Route path='/ChatWindow' element={<ChatWindow />} />
         <Route path='/ProfilePage' element={<ProfilePage />} />
+        <Route path='/Settings' element={<Settings />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

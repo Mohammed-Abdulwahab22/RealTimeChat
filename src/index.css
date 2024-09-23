@@ -585,3 +585,41 @@ body {
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
+
+.ProfilePage-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to bottom, #01539F, #007BFF, #00A1E0);
+    padding: 20px;
+    color: #fff;
+    text-align: center;
+}
+
+.ProfilePage-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.ProfilePage-info h1 {
+    font-family: 'SodaCream', sans-serif;
+    font-size: 40px;
+    margin: 10px 0;
+    color: white;
+}
+
+.ProfilePage-status {
+    font-size: 18px;
+    color: #d1e7dd;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
