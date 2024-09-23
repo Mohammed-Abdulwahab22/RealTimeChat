@@ -22,7 +22,7 @@ export const ProfilePage = () => {
           <p className='ProfilePage-status'>Settings</p>
         </Link>
 
-        <button className='ProfilePage-status' onClick={handleLogout}>Log Out</button>
+        <button className='ProfilePage-button' onClick={handleLogout}>Log Out</button>
       </div>
     </div>
   );
