@@ -1,31 +1,67 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-export const RegisterForm = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-  return (
-    <div className="AuthForm-container">
-      <div className='AuthForm-form'>
-        <img src="src/assets/App-logo.png" alt="logo" height={50} />
-        <h1>Register</h1>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="username">Username</label>
-          <input type="text" name="username" id="username" required />
-          <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" required />
-          <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" required />
-          <label htmlFor="confirm-password">Confirm Password</label>
-          <input type="password" name="confirm-password" id="confirm-password" required />
-          <button type="submit">Register</button>
-        </form>
-        <div className="AuthForm-register">
-          <span>Already have an account? </span>
-          <Link to="/login">Login</Link>
+export const RegisterForm = () => {
+    const [username, setUserName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("auth-token");
+        if (token) {
+            navigate("/ChatWindow"); 
+        }
+    }, [navigate]);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (password !== confirmPassword) {
+            console.log('Passwords do not match');
+            return;
+        }
+
+        try {
+            const response = await axios.post("http://localhost:5000/api/users/register", {
+                username,
+                email,
+                password
+            });
+
+            if (response.status === 201) {
+                console.log("User created successfully");
+                navigate("/Login");
+            }
+        } catch (err: any) {
+            console.log('Registration failed', err.response.data.message);
+        }
+    };
+
+    return (
+        <div className="AuthForm-container">
+            <div className='AuthForm-form'>
+                <img src="src/assets/App-logo.png" alt="logo" height={50} />
+                <h1>Register</h1>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="username">Username</label>
+                    <input type="text" name="username" id="username" value={username} onChange={(e) => setUserName(e.target.value)} required />
+                    <label htmlFor="email">Email</label>
+                    <input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <label htmlFor="password">Password</label>
+                    <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <label htmlFor="confirm-password">Confirm Password</label>
+                    <input type="password" name="confirm-password" id="confirm-password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                    <button type="submit">Register</button>
+                </form>
+                <div className="AuthForm-register">
+                    <span>Already have an account? </span>
+                    <Link to="/Login">Login</Link>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };

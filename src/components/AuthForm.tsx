@@ -1,11 +1,37 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
 export const AuthForm = () => {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        
-            
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("auth-token");
+        if (token) {
+            navigate("/ChatWindow"); 
+        }
+    }, [navigate]);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        try {
+            const response = await axios.post("http://localhost:5000/api/users/login", {
+                username,
+                password
+            });
+            if (response.status === 200) {
+                console.log("Login successful");
+                localStorage.setItem("auth-token", response.data.token);
+                navigate("/ChatWindow");
+            }
+        } catch (err: any) {
+            console.log("Login failed", err.response.data.message);
+        }
     }
+
     return (
         <div className="AuthForm-container">
             <div className='AuthForm-form'>
@@ -13,9 +39,9 @@ export const AuthForm = () => {
                 <h1>Login</h1>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="username">Username</label>
-                    <input type="text" name="username" id="username" />
+                    <input type="text" name="username" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
                     <label htmlFor="password">Password</label>
-                    <input type="password" name="password" id="password" />
+                    <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     <button type="submit">Login</button>
                 </form>
                 <div className="AuthForm-register">
@@ -24,5 +50,5 @@ export const AuthForm = () => {
                 </div>
             </div>
         </div>
-    )
+    );
 }
