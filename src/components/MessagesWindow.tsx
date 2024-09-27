@@ -1,49 +1,53 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { MessageInputBar } from './MessageInputBar';
 import ChatHeader from './ChatHeader';
 
-export const MessagesWindow = () => {
-  const user = {
-    name: 'John Doe',
-    profileImage: 'src/assets/App-people-chatting.png', 
-  };
+interface User {
+  _id: string;
+  username: string;
+  profileImage?: string;
+}
 
-  const messages = [
-    { id: 1, text: "Hello!", sender: "recipient" },
-    { id: 2, text: "Hi there!", sender: "sender" },
-    { id: 3, text: "How are you?", sender: "recipient" },
-    { id: 4, text: "I'm good, thanks! How about you? What have you been up to? I haven't heard from you in a while!", sender: "sender" },
-  ];
+interface Props {
+  selectedUser: User | null; 
+  loggedInUserId: string;
+}
 
-  const MAX_LINE_LENGTH = 30;
+export const MessagesWindow = ({ selectedUser, loggedInUserId }: Props) => {
+  const [messages, setMessages] = useState([]);
 
-  const formatMessageText = (text: string) => {
-    if (text.length <= MAX_LINE_LENGTH) return [text];
+  useEffect(() => {
+    const fetchMessages = async () => {
+      if (selectedUser) {
+        try {
+          const response = await fetch(`/api/messages/${loggedInUserId}/${selectedUser._id}`);
+          const data = await response.json();
+          setMessages(data);
+        } catch (error) {
+          console.error("Error fetching messages:", error);
+        }
+      }
+    };
 
-    const lines = [];
-    let start = 0;
-    while (start < text.length) {
-      lines.push(text.substring(start, start + MAX_LINE_LENGTH));
-      start += MAX_LINE_LENGTH;
-    }
-
-    return lines;
-  };
-
+    fetchMessages();
+  }, [selectedUser, loggedInUserId]); 
   return (
     <div className='MessagesWindow-container'>
-      <ChatHeader user={user} />
+      {selectedUser && (
+        <ChatHeader 
+          user={{ 
+            name: selectedUser.username, 
+            profileImage: selectedUser.profileImage || 'src/assets/default-profile.png' 
+          }} 
+        />
+      )}
       <div className='MessagesWindow-content'>
         {messages.map(message => (
           <div
-            key={message.id}
-            className={message.sender === 'sender' ? 'message-sender' : 'message-recipient'}
+            key={message._id}
+            className={message.senderId === loggedInUserId ? 'message-sender' : 'message-recipient'}
           >
-            {formatMessageText(message.text).map((line, index) => (
-              <span key={index} style={{ display: 'block', margin: 0 }}>
-                {line}
-              </span>
-            ))}
+            {message.content}
           </div>
         ))}
       </div>

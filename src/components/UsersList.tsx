@@ -13,8 +13,11 @@ interface User {
 interface JWTPayload {
   userId: string; 
 }
+interface Props {
+  onSelectUser: (user: User) => void;
+}
 
-export const UsersList = () => {
+export const UsersList = ({onSelectUser}: Props) => {
   const { data: users = [], error, isLoading, refetch } = useGetUsersQuery();
 
   useEffect(() => {
@@ -24,14 +27,14 @@ export const UsersList = () => {
   const authToken = localStorage.getItem('auth-token');
   
   let loggedInUserId: string | null = null;
+  let loggedInUserName: string | null = null;
 
   if (authToken) {
     try {
       const decodedToken = jwt_decode.jwtDecode(authToken) as JWTPayload;
       console.log("Decoded Token:", decodedToken);
-
       loggedInUserId = decodedToken.id; 
-      console.log("Logged In User ID:", loggedInUserId);
+      loggedInUserName = decodedToken.username;
 
     } catch (error) {
       console.error("Error decoding JWT:", error);
@@ -59,32 +62,36 @@ export const UsersList = () => {
 
   return (
     <div className='UsersList-container'>
-      <SearchBar />
-      <div className="UsersList-profile">
+    <SearchBar />
+    <div className="UsersList-profile">
         <Link to="/ProfilePage">
-          <img 
-            src='src/assets/60111.jpg' 
-            alt='Profile' 
-            className='UsersList-profileImage'
-          />
-        </Link>
-      </div>
-      <div className="UsersList-userInfo">
-        <h2 className="UsersList-username">Mohammed Abdulwahab</h2>
-      </div>
-
-      <ul className='UsersList-list'>
-        {filteredUsers.map((user: User) => (
-          <li key={user._id} className='UsersList-item'>
             <img 
-              src={user.profileImage || 'src/assets/60111.jpg'} 
-              alt={`${user.username} profile`} 
-              className='UsersList-userImage' 
+                src='src/assets/60111.jpg' 
+                alt='Profile' 
+                className='UsersList-profileImage'
             />
-            {user.username}
-          </li>
-        ))}
-      </ul>
+        </Link>
     </div>
+    <div className="UsersList-userInfo">
+        <h2 className="UsersList-username">{loggedInUserName}</h2>
+    </div>
+
+    <ul className='UsersList-list'>
+        {filteredUsers.map((user: User) => (
+        <li 
+        key={user._id} 
+        className='UsersList-item'
+        onClick={() => onSelectUser(user)} 
+      >
+        <img 
+            src={user.profileImage || 'src/assets/60111.jpg'} 
+            alt={`${user.username} profile`} 
+            className='UsersList-userImage' 
+        />
+        {user.username}
+      </li>
+        ))}
+    </ul>
+</div>
   );
 };

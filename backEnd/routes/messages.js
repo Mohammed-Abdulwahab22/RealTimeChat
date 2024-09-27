@@ -15,4 +15,19 @@ router.post('/send', auth, async (req, res) => {
     }
 });
 
+router.get('/messages/:senderId/:recipientId', async (req, res) => {
+    const { senderId, recipientId } = req.params;
+    try {
+        const messages = await Message.find({
+            $or: [
+                { senderId, recipientId },
+                { senderId: recipientId, recipientId: senderId }
+            ]
+        }).sort({ createdAt: 1 }); 
+        res.status(200).json(messages);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching messages', error });
+    }
+});
+
 module.exports = router;
