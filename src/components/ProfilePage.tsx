@@ -13,7 +13,7 @@ export const ProfilePage = () => {
   return (
     <div className='ProfilePage-container'>
       <div className='ProfilePage-image'>
-        <img src="src/assets/App-people-chatting.png" alt="Profile" />
+        <img src="src\assets\60111.jpg" alt="Profile" />
       </div>
 
       <div className='ProfilePage-info'>

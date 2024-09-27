@@ -1,12 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../slices/counterSlice";
+import { usersApi } from "../slices/api/getUsers"; 
+import usersReducer from "../slices/usersSlice"; 
 
 const store = configureStore({
     reducer: {
-        counter: counterReducer,
-    }
-})
+        [usersApi.reducerPath]: usersApi.reducer, 
+        users: usersReducer,
+    },
+    middleware: (getDefaultMiddleware) => 
+        getDefaultMiddleware().concat(usersApi.middleware), 
+});
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch
-export default store
+export type AppDispatch = typeof store.dispatch;
+export default store;

@@ -9,7 +9,7 @@ const ChatHeader:React.FC<{ user: User }> = ({ user }) => {
   return (
     <div className='ChatHeader-container'>
       <img
-        src={user.profileImage}
+        src="src\assets\60111.jpg"
         alt={`${user.name}'s profile`}
         className='ChatHeader-profileImage'
       />
