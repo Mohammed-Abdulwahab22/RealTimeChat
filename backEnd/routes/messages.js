@@ -6,9 +6,17 @@ const auth = require('../middleware/auth');
 
 router.post('/send', auth, async (req, res) => {
     try {
-        const { senderId, recipientId, content } = req.body;
-        const messageId = uuidv4();
-        const message = await Message.create({ messageId, senderId, recipientId, content });
+        const { recipientId, content } = req.body;
+        const senderId = req.user.id; 
+        const messageId = uuidv4(); 
+
+        const message = await Message.create({ 
+            _id: messageId,  
+            senderId, 
+            recipientId, 
+            content 
+        });
+
         res.status(201).json(message);
     } catch (err) {
         res.status(400).json({ message: err.message });

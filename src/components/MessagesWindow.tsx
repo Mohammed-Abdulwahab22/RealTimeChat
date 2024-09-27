@@ -20,7 +20,7 @@ export const MessagesWindow = ({ selectedUser, loggedInUserId }: Props) => {
     const fetchMessages = async () => {
       if (selectedUser) {
         try {
-          const response = await fetch(`/api/messages/${loggedInUserId}/${selectedUser._id}`);
+          const response = await fetch(`http://localhost:5000/api/messages/messages/${loggedInUserId}/${selectedUser._id}`);
           const data = await response.json();
           setMessages(data);
         } catch (error) {
@@ -31,6 +31,46 @@ export const MessagesWindow = ({ selectedUser, loggedInUserId }: Props) => {
 
     fetchMessages();
   }, [selectedUser, loggedInUserId]); 
+
+  const sendMessage = async (content: string) => {
+    if (!content.trim()) return; 
+
+    const messageData = {
+      senderId: loggedInUserId,
+      recipientId: selectedUser?._id,
+      content,
+    };
+
+    const token = localStorage.getItem('auth-token');
+
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/messages/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': `${token}`, 
+
+        },
+        body: JSON.stringify(messageData),
+      });
+
+      if (response.ok) {
+        const newMessage = await response.json();
+        setMessages((prevMessages) => [...prevMessages, newMessage]); 
+      } else {
+        const errorData = await response.json();
+        console.error('Error sending message:', errorData.message);
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
   return (
     <div className='MessagesWindow-container'>
       {selectedUser && (
@@ -51,7 +91,7 @@ export const MessagesWindow = ({ selectedUser, loggedInUserId }: Props) => {
           </div>
         ))}
       </div>
-      <MessageInputBar />
+      <MessageInputBar sendMessage={sendMessage} /> 
     </div>
   );
 };
