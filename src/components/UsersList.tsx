@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { SearchBar } from './SearchBar';
 import { Link } from 'react-router-dom';
 import { useGetUsersQuery } from '../slices/api/getUsers'; 
@@ -19,6 +20,8 @@ interface Props {
 
 export const UsersList = ({onSelectUser}: Props) => {
   const { data: users = [], error, isLoading, refetch } = useGetUsersQuery();
+  const [searchQuery, setSearchQuery] = useState('');
+
 
   useEffect(() => {
     refetch();
@@ -56,13 +59,16 @@ export const UsersList = ({onSelectUser}: Props) => {
     return <div>An unknown error occurred.</div>;
   }
 
-  const filteredUsers = users.filter((user: User) => user._id !== loggedInUserId);
+  const filteredUsers = users.filter((user: User) => 
+    user._id !== loggedInUserId &&
+    user.username.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
+);
   console.log("Filtered Users:", filteredUsers);
 
 
   return (
     <div className='UsersList-container'>
-    <SearchBar />
+    <SearchBar onSearch={setSearchQuery} />
     <div className="UsersList-profile">
         <Link to="/ProfilePage">
             <img 
