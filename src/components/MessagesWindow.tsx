@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { io } from 'socket.io-client'; 
 import { MessageInputBar } from './MessageInputBar';
 import ChatHeader from './ChatHeader';
 
@@ -9,9 +10,11 @@ interface User {
 }
 
 interface Props {
-  selectedUser: User | null; 
+  selectedUser: User | null;
   loggedInUserId: string;
 }
+
+const socket = io('http://localhost:5000'); 
 
 export const MessagesWindow = ({ selectedUser, loggedInUserId }: Props) => {
   const [messages, setMessages] = useState([]);
@@ -30,10 +33,20 @@ export const MessagesWindow = ({ selectedUser, loggedInUserId }: Props) => {
     };
 
     fetchMessages();
-  }, [selectedUser, loggedInUserId]); 
+  }, [selectedUser, loggedInUserId]);
+
+  useEffect(() => {
+    socket.on('receiveMessage', (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
+    return () => {
+      socket.off('receiveMessage');
+    };
+  }, []);
 
   const sendMessage = async (content: string) => {
-    if (!content.trim()) return; 
+    if (!content.trim()) return;
 
     const messageData = {
       senderId: loggedInUserId,
@@ -41,8 +54,9 @@ export const MessagesWindow = ({ selectedUser, loggedInUserId }: Props) => {
       content,
     };
 
-    const token = localStorage.getItem('auth-token');
+    socket.emit('sendMessage', messageData);
 
+    const token = localStorage.getItem('auth-token');
     if (!token) {
       console.error('No token found');
       return;
@@ -53,15 +67,14 @@ export const MessagesWindow = ({ selectedUser, loggedInUserId }: Props) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'auth-token': `${token}`, 
-
+          'auth-token': `${token}`,
         },
         body: JSON.stringify(messageData),
       });
 
       if (response.ok) {
         const newMessage = await response.json();
-        setMessages((prevMessages) => [...prevMessages, newMessage]); 
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
       } else {
         const errorData = await response.json();
         console.error('Error sending message:', errorData.message);
@@ -74,11 +87,11 @@ export const MessagesWindow = ({ selectedUser, loggedInUserId }: Props) => {
   return (
     <div className='MessagesWindow-container'>
       {selectedUser && (
-        <ChatHeader 
-          user={{ 
-            name: selectedUser.username, 
-            profileImage: selectedUser.profileImage || 'src/assets/default-profile.png' 
-          }} 
+        <ChatHeader
+          user={{
+            name: selectedUser.username,
+            profileImage: selectedUser.profileImage || 'src/assets/default-profile.png'
+          }}
         />
       )}
       <div className='MessagesWindow-content'>
@@ -91,7 +104,7 @@ export const MessagesWindow = ({ selectedUser, loggedInUserId }: Props) => {
           </div>
         ))}
       </div>
-      <MessageInputBar sendMessage={sendMessage} /> 
+      <MessageInputBar sendMessage={sendMessage} />
     </div>
   );
 };

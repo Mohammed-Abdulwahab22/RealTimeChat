@@ -8,8 +8,16 @@ export const MessageInputBar: React.FC<Props> = ({ sendMessage }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleSend = () => {
-    sendMessage(inputValue);
-    setInputValue(''); 
+    if (inputValue.trim()) {
+      sendMessage(inputValue);
+      setInputValue('');  
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSend();  
+    }
   };
 
   return (
@@ -20,6 +28,7 @@ export const MessageInputBar: React.FC<Props> = ({ sendMessage }) => {
         className='MessageInputBar-input' 
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)} 
+        onKeyDown={handleKeyDown}  
       />
       <button className='MessageInputBar-button' onClick={handleSend}>
         Send
