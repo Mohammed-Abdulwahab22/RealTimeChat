@@ -8,3 +8,4 @@ Talky is a dynamic, real-time chat application built with React.js. It provides 
 ![Image description](src/assets/sample2.png)
 ![Image description](src/assets/sample3.png)
 ![Image description](src/assets/sample4.png)
+
