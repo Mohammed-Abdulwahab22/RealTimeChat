@@ -160,7 +160,7 @@
 .NavBar-links a {
     text-decoration: none;
     color: #007BFF;
-    font-family: 'SodaCream', sans-serif;
+    font-family:  sans-serif;
     font-size: 35px;
     transition: color 0.3s;
 }
@@ -608,7 +608,7 @@ body {
 }
 
 .ProfilePage-info h1 {
-    font-family: 'SodaCream', sans-serif;
+    font-family:  sans-serif;
     font-size: 40px;
     margin: 10px 0;
     color: white;
@@ -623,7 +623,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 .ProfilePage-button{
-    background-color: red;
+    background-color: #0056b3;
     color: white;
     border: none;
     border-radius: 5px;
@@ -631,5 +631,9 @@ body {
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
     margin-top: 10px;
+}
+.ProfilePage-button:hover {
+    background-color: red;
+    transform: scale(1.05);
 }
 
